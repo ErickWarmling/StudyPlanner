@@ -11,5 +11,8 @@ data class Disciplina (
     val id: Int = 0,
 
     @ColumnInfo(name = "disciplina_nome")
-    val nome: String
+    val nome: String,
+
+    @ColumnInfo(name = "disciplina_url_imagem")
+    val urlImagem: String
 )
