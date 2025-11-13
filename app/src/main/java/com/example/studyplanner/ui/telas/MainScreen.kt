@@ -45,15 +45,34 @@ fun MainScreen() {
         }
     ) {
         Scaffold(
-            topBar = { TopBar(title = title, onMenuClick = { scope.launch { drawerState.open() } }) }
+            topBar = {
+                when (currentRoute) {
+                    "cadastro_disciplina" -> {
+                        TopBar(
+                            title = "Cadastro de Disciplina",
+                            onMenuClick = { navController.popBackStack() },
+                            isBack = true
+                        )
+                    }
+
+                    else -> {
+                        TopBar(
+                            title = title,
+                            onMenuClick = { scope.launch { drawerState.open() } },
+                            isBack = false
+                        )
+                    }
+                }
+            }
         ) { innerPadding ->
             NavHost(
                 navController = navController,
                 startDestination = "disciplinas",
                 modifier = Modifier.padding(innerPadding)
             ) {
-                composable("disciplinas") { TelaDisciplinas() }
+                composable("disciplinas") { TelaDisciplinas(navController) }
                 composable("resumo_estudo") { TelaResumoEstudo() }
+                composable("cadastro_disciplina") { TelaCadastroDisciplina(navController) }
             }
         }
     }

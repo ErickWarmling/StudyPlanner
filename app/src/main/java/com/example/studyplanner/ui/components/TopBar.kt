@@ -1,6 +1,7 @@
 package com.example.studyplanner.ui.components
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -15,15 +16,16 @@ import androidx.compose.runtime.Composable
 @Composable
 fun TopBar(
     title: String,
-    onMenuClick: () -> Unit
+    onMenuClick: () -> Unit,
+    isBack: Boolean = false
 ) {
     TopAppBar(
         title = { Text(title) },
         navigationIcon = {
             IconButton(onClick = { onMenuClick() }) {
                 Icon(
-                    imageVector = Icons.Default.Menu,
-                    contentDescription = "Menu"
+                    imageVector = if (isBack) Icons.Default.ArrowBack else Icons.Default.Menu,
+                    contentDescription = if (isBack) "Voltar" else "Menu"
                 )
             }
         },
