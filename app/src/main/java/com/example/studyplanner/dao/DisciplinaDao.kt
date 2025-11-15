@@ -8,6 +8,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import com.example.studyplanner.model.Disciplina
 import com.example.studyplanner.model.DisciplinaComTarefas
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface DisciplinaDao {
@@ -18,10 +19,10 @@ interface DisciplinaDao {
     fun deleteDisciplina(disciplina: Disciplina)
 
     @Query("SELECT * FROM disciplinas")
-    fun getAll(): List<Disciplina>
+    fun getAll(): Flow<List<Disciplina>>
 
     // Buscar disciplinas com suas tarefas
     @Transaction
     @Query("SELECT * FROM disciplinas")
-    fun getDisciplinasComTarefas(): List<DisciplinaComTarefas>
+    fun getDisciplinasComTarefas(): Flow<List<DisciplinaComTarefas>>
 }

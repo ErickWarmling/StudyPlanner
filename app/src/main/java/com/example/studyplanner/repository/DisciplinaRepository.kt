@@ -3,6 +3,7 @@ package com.example.studyplanner.repository
 import com.example.studyplanner.dao.DisciplinaDao
 import com.example.studyplanner.model.Disciplina
 import com.example.studyplanner.model.DisciplinaComTarefas
+import kotlinx.coroutines.flow.Flow
 
 class DisciplinaRepository(private val disciplinaDao: DisciplinaDao) {
 
@@ -10,15 +11,15 @@ class DisciplinaRepository(private val disciplinaDao: DisciplinaDao) {
         return disciplinaDao.addDisciplina(disciplina).toInt()
     }
 
-    fun deleteDisciplin(disciplina: Disciplina) {
+    fun deleteDisciplina(disciplina: Disciplina) {
         disciplinaDao.deleteDisciplina(disciplina)
     }
 
-    fun getAll(): List<Disciplina> {
+    fun getAll(): Flow<List<Disciplina>> {
         return disciplinaDao.getAll()
     }
 
-    fun getDisciplinasComTarefas(): List<DisciplinaComTarefas> {
+    fun getDisciplinasComTarefas(): Flow<List<DisciplinaComTarefas>> {
         return disciplinaDao.getDisciplinasComTarefas()
     }
 }

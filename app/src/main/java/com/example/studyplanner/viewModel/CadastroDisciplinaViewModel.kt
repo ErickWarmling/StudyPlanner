@@ -52,8 +52,8 @@ class CadastroDisciplinaViewModel (application: Application) : AndroidViewModel(
         val nomeAtual = nomeDisciplina.value
         val imagemAtual = imageUri.value
 
-        if (nomeAtual.isBlank()) {
-            _mensagem.value = "Informe o nome da disciplina"
+        if (nomeAtual.isBlank() || imagemAtual == null) {
+            _mensagem.value = "Preencha todos os campos"
             return
         }
 
