@@ -38,7 +38,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.studyplanner.model.Disciplina
 import com.example.studyplanner.ui.theme.BluePrimary
 import com.example.studyplanner.viewModel.CadastroTarefaViewModel
 import java.text.SimpleDateFormat
@@ -53,22 +52,22 @@ fun TelaCadastroTarefa(
 ) {
     val context = LocalContext.current
 
-    // Estados do Formulário
+
     val nome by viewModel.nome.collectAsState()
     val descricao by viewModel.descricao.collectAsState()
     val dataEntrega by viewModel.dataEntrega.collectAsState()
     val disciplinaSelecionada by viewModel.disciplinaSelecionada.collectAsState()
     val todasDisciplinas by viewModel.todasDisciplinas.collectAsState()
 
-    // Estados da UI
+
     val mensagem by viewModel.mensagem.collectAsState()
     val sucesso by viewModel.sucesso.collectAsState()
     var showDatePicker by remember { mutableStateOf(false) }
 
-    // Dropdown (Select)
+
     var expanded by remember { mutableStateOf(false) }
 
-    // Handlers de UI
+
     LaunchedEffect(mensagem) {
         mensagem?.let {
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
@@ -82,7 +81,7 @@ fun TelaCadastroTarefa(
         }
     }
 
-    // --- DIÁLOGO DE DATA ---
+
     if (showDatePicker) {
         val datePickerState = rememberDatePickerState(
             initialSelectedDateMillis = dataEntrega ?: System.currentTimeMillis()
@@ -107,7 +106,7 @@ fun TelaCadastroTarefa(
         }
     }
 
-    // --- COMPOSABLE ---
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -115,7 +114,7 @@ fun TelaCadastroTarefa(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        // --- NOME DA TAREFA ---
+
         OutlinedTextField(
             value = nome,
             onValueChange = viewModel::onNomeChange,
@@ -124,7 +123,7 @@ fun TelaCadastroTarefa(
         )
         Spacer(modifier = Modifier.height(16.dp))
 
-        // --- DESCRIÇÃO ---
+
         OutlinedTextField(
             value = descricao,
             onValueChange = viewModel::onDescricaoChange,
@@ -133,7 +132,7 @@ fun TelaCadastroTarefa(
         )
         Spacer(modifier = Modifier.height(16.dp))
 
-        // --- DATA DE ENTREGA ---
+
         OutlinedTextField(
             value = dataEntrega?.let { formatarData(it) } ?: "",
             onValueChange = {},
@@ -152,7 +151,7 @@ fun TelaCadastroTarefa(
         )
         Spacer(modifier = Modifier.height(16.dp))
 
-        // --- SELETOR DE DISCIPLINA (DROPDOWN) ---
+
         ExposedDropdownMenuBox(
             expanded = expanded,
             onExpandedChange = { expanded = !expanded },
@@ -188,7 +187,7 @@ fun TelaCadastroTarefa(
         }
         Spacer(modifier = Modifier.height(32.dp))
 
-        // --- BOTÃO CADASTRAR ---
+
         Button(
             onClick = { viewModel.salvarTarefa() },
             modifier = Modifier.fillMaxWidth(),
@@ -205,7 +204,6 @@ fun TelaCadastroTarefa(
     }
 }
 
-// Função utilitária para formatar o Long da data
 private fun formatarData(timestamp: Long): String {
     val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
     return sdf.format(Date(timestamp))

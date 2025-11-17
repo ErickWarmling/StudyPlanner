@@ -75,7 +75,7 @@ fun TelaTarefasDisciplina(
             if (disciplinaComTarefas != null) {
                 FloatingActionButton(
                     onClick = {
-                        // Navega para o cadastro de tarefa, passando o ID da disciplina atual
+
                         navController.navigate("cadastro_tarefa/${disciplinaComTarefas!!.disciplina.id}")
                     },
                     containerColor = BlueMedium,
@@ -100,7 +100,7 @@ fun TelaTarefasDisciplina(
                 LazyColumn(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    // 1. Cabeçalho com Imagem e Título
+
                     item {
                         HeaderDisciplina(disciplina = disciplina.nome, imagemUrl = disciplina.urlImagem)
                         Text(
@@ -247,7 +247,7 @@ fun TarefaCard(
     }
 }
 
-// Função utilitária para formatar o Long da data
+
 private fun formatarData(timestamp: Long): String {
     val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
     return sdf.format(Date(timestamp))

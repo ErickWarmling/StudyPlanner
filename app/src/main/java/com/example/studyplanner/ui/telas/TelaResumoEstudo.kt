@@ -65,9 +65,7 @@ fun TelaResumoEstudo(
     }
 }
 
-/**
- * Card para "Tarefas Cadastradas" e "Tarefas Concluídas".
- */
+
 @Composable
 fun ResumoCard(
     titulo: String,
@@ -113,9 +111,7 @@ fun ResumoCard(
     }
 }
 
-/**
- * Card para o "Progresso Geral" com o gráfico circular.
- */
+
 @Composable
 fun ProgressoGeralCard(
     progresso: Float
@@ -142,32 +138,32 @@ fun ProgressoGeralCard(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Box para sobrepor o texto e o gráfico
+
             Box(
                 modifier = Modifier.size(180.dp),
                 contentAlignment = Alignment.Center
             ) {
-                // Trilha de fundo do gráfico
+
                 CircularProgressIndicator(
-                    progress = 1f, // Completo
+                    progress = 1f,
                     modifier = Modifier.fillMaxSize(),
-                    color = BlueLight, // Cor de fundo (trilha)
+                    color = BlueLight,
                     strokeWidth = 16.dp
                 )
 
-                // Progresso real
+
                 CircularProgressIndicator(
                     progress = progresso,
                     modifier = Modifier.fillMaxSize(),
-                    color = BluePrimary, // Cor do progresso
+                    color = BluePrimary,
                     strokeWidth = 16.dp,
-                    strokeCap = StrokeCap.Round // Borda arredondada
+                    strokeCap = StrokeCap.Round
                 )
 
-                // Texto da porcentagem
+
                 Text(
                     text = "${(progresso * 100).toInt()}%",
-                    fontSize = 56.sp, // <-- MUDANÇA PRINCIPAL AQUI
+                    fontSize = 56.sp,
                     fontWeight = FontWeight.Bold,
                     color = BluePrimary
                 )

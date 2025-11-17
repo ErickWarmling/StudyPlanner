@@ -22,7 +22,7 @@ class TarefasDisciplinaViewModel(application: Application, savedStateHandle: Sav
     private val disciplinaRepository: DisciplinaRepository
     private val tarefaRepository: TarefaRepository
 
-    // Pega o ID da disciplina passado pela navegação
+
     private val disciplinaId: Int = savedStateHandle.get<Int>("disciplinaId") ?: 0
 
     val disciplinaComTarefas: Flow<DisciplinaComTarefas>
@@ -40,7 +40,7 @@ class TarefasDisciplinaViewModel(application: Application, savedStateHandle: Sav
         disciplinaRepository = DisciplinaRepository(db.disciplinaDao())
         tarefaRepository = TarefaRepository(db.tarefaDao())
 
-        // Inicia o fluxo para buscar a disciplina e suas tarefas
+
         disciplinaComTarefas = disciplinaRepository.getDisciplinaComTarefas(disciplinaId).filterNotNull()
     }
 
@@ -53,8 +53,7 @@ class TarefasDisciplinaViewModel(application: Application, savedStateHandle: Sav
 
     fun marcarTarefaConcluida(tarefa: Tarefa, concluida: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
-            // A sua DAO `tarefaConcluida` usa IDs, mas é mais seguro usar o objeto
-            // Vamos usar o `editTarefa` que você já tem
+
             val tarefaAtualizada = tarefa.copy(concluida = concluida)
             tarefaRepository.updateTarefa(tarefaAtualizada)
         }

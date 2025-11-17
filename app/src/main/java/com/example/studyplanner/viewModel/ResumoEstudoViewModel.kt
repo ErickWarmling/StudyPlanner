@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
-// Data class para guardar o estado calculado
+
 data class ResumoEstado(
     val totalTarefas: Int = 0,
     val tarefasConcluidas: Int = 0,
@@ -33,7 +33,7 @@ class ResumoEstudoViewModel(application: Application) : AndroidViewModel(applica
 
         tarefaRepository = TarefaRepository(db.tarefaDao())
 
-        // Mapeia o Flow<List<Tarefa>> para o Flow<ResumoEstado>
+
         estado = tarefaRepository.getAll()
             .map { tarefas ->
                 val total = tarefas.size
@@ -53,7 +53,7 @@ class ResumoEstudoViewModel(application: Application) : AndroidViewModel(applica
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5000),
-                initialValue = ResumoEstado() // Estado inicial
+                initialValue = ResumoEstado()
             )
     }
 }
