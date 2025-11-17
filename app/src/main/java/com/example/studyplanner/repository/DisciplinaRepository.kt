@@ -22,4 +22,8 @@ class DisciplinaRepository(private val disciplinaDao: DisciplinaDao) {
     fun getDisciplinasComTarefas(): Flow<List<DisciplinaComTarefas>> {
         return disciplinaDao.getDisciplinasComTarefas()
     }
+
+    fun getDisciplinaComTarefas(disciplinaId: Int): Flow<DisciplinaComTarefas?> {
+        return disciplinaDao.getDisciplinaComTarefas(disciplinaId)
+    }
 }

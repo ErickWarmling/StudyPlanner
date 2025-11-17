@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.studyplanner.model.Tarefa
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TarefaDao {
@@ -20,7 +21,7 @@ interface TarefaDao {
     fun deleteTarefa(tarefa: Tarefa)
 
     @Query("SELECT * FROM tarefas")
-    fun getAll(): List<Tarefa>
+    fun getAll(): Flow<List<Tarefa>>
 
     // Buscar apenas as tarefas de uma determinada disciplina
     @Query("SELECT * FROM tarefas WHERE tarefa_disciplina_id = :disciplinaId")

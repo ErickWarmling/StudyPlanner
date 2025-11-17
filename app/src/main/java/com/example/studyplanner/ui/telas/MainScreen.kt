@@ -11,8 +11,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.studyplanner.ui.components.MenuLateral
 import com.example.studyplanner.ui.components.TopBar
 import kotlinx.coroutines.launch
@@ -25,9 +27,35 @@ fun MainScreen() {
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route
 
-    val title = when (currentRoute) {
-        "resumo_estudo" -> "Resumo do Estudo"
-        else -> "Disciplinas"
+    // Lógica de Título e Botão "Voltar"
+    val title: String
+    val isBack: Boolean
+
+    when {
+        currentRoute == "disciplinas" -> {
+            title = "Disciplinas"
+            isBack = false
+        }
+        currentRoute == "resumo_estudo" -> {
+            title = "Resumo do Estudo"
+            isBack = false
+        }
+        currentRoute == "cadastro_disciplina" -> {
+            title = "Cadastro de Disciplina"
+            isBack = true
+        }
+        currentRoute?.startsWith("tarefa_disciplina") == true -> {
+            title = "Tarefas da Disciplina"
+            isBack = true
+        }
+        currentRoute?.startsWith("cadastro_tarefa") == true -> {
+            title = "Cadastro de Tarefa"
+            isBack = true
+        }
+        else -> {
+            title = "Disciplinas" // Padrão
+            isBack = false
+        }
     }
 
     ModalNavigationDrawer(
@@ -46,23 +74,17 @@ fun MainScreen() {
     ) {
         Scaffold(
             topBar = {
-                when (currentRoute) {
-                    "cadastro_disciplina" -> {
-                        TopBar(
-                            title = "Cadastro de Disciplina",
-                            onMenuClick = { navController.popBackStack() },
-                            isBack = true
-                        )
-                    }
-
-                    else -> {
-                        TopBar(
-                            title = title,
-                            onMenuClick = { scope.launch { drawerState.open() } },
-                            isBack = false
-                        )
-                    }
-                }
+                TopBar(
+                    title = title,
+                    onMenuClick = {
+                        if (isBack) {
+                            navController.popBackStack()
+                        } else {
+                            scope.launch { drawerState.open() }
+                        }
+                    },
+                    isBack = isBack
+                )
             }
         ) { innerPadding ->
             NavHost(
@@ -70,9 +92,33 @@ fun MainScreen() {
                 startDestination = "disciplinas",
                 modifier = Modifier.padding(innerPadding)
             ) {
-                composable("disciplinas") { TelaDisciplinas(navController) }
-                composable("resumo_estudo") { TelaResumoEstudo() }
-                composable("cadastro_disciplina") { TelaCadastroDisciplina(navController) }
+                composable("disciplinas") {
+                    TelaDisciplinas(navController)
+                }
+                composable("resumo_estudo") {
+                    TelaResumoEstudo()
+                }
+                composable("cadastro_disciplina") {
+                    TelaCadastroDisciplina(navController)
+                }
+
+                // NOVA ROTA: TELA DE TAREFAS
+                composable(
+                    route = "tarefa_disciplina/{disciplinaId}",
+                    arguments = listOf(navArgument("disciplinaId") { type = NavType.IntType })
+                ) {
+                    // O ViewModel vai pegar o ID automaticamente pelo SavedStateHandle
+                    TelaTarefasDisciplina(navController = navController)
+                }
+
+                // NOVA ROTA: CADASTRO DE TAREFA
+                composable(
+                    route = "cadastro_tarefa/{disciplinaId}",
+                    arguments = listOf(navArgument("disciplinaId") { type = NavType.IntType })
+                ) {
+                    // O ViewModel vai pegar o ID automaticamente
+                    TelaCadastroTarefa(navController = navController)
+                }
             }
         }
     }

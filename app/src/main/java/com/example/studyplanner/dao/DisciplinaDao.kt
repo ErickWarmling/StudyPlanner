@@ -25,4 +25,8 @@ interface DisciplinaDao {
     @Transaction
     @Query("SELECT * FROM disciplinas")
     fun getDisciplinasComTarefas(): Flow<List<DisciplinaComTarefas>>
+
+    @Transaction
+    @Query("SELECT * FROM disciplinas WHERE disciplina_id = :disciplinaId")
+    fun getDisciplinaComTarefas(disciplinaId: Int): Flow<DisciplinaComTarefas?>
 }

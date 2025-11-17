@@ -82,7 +82,7 @@ fun TelaDisciplinas(
 
     Scaffold(
         floatingActionButton = {
-            BotaoAdicionarDisciplina {
+            BotaoAdicionarDisciplina{
                 navController.navigate("cadastro_disciplina")
             }
         }

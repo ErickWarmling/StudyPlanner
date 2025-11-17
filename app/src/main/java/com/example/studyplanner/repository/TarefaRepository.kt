@@ -2,6 +2,7 @@ package com.example.studyplanner.repository
 
 import com.example.studyplanner.dao.TarefaDao
 import com.example.studyplanner.model.Tarefa
+import kotlinx.coroutines.flow.Flow
 
 class TarefaRepository(private val tarefaDao: TarefaDao) {
 
@@ -17,7 +18,7 @@ class TarefaRepository(private val tarefaDao: TarefaDao) {
         tarefaDao.deleteTarefa(tarefa)
     }
 
-    fun getAll(): List<Tarefa> {
+    fun getAll(): Flow<List<Tarefa>> {
         return tarefaDao.getAll()
     }
 
