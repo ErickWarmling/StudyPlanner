@@ -33,6 +33,7 @@ import com.example.studyplanner.viewModel.DisciplinaViewModel
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.filled.School
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,7 +50,7 @@ fun TelaDisciplinas(
     navController: NavController,
     viewModel: DisciplinaViewModel = viewModel()
 ) {
-    val disciplinas = viewModel.disciplinas.collectAsState()
+    val disciplinas = viewModel.disciplinasComProgresso.collectAsState()
     var disciplinaParaExcluirNome by remember { mutableStateOf<Disciplina?>(null) }
 
     if (disciplinaParaExcluirNome != null) {
@@ -123,14 +124,16 @@ fun TelaDisciplinas(
                 }
             } else {
                 LazyColumn {
-                    items(disciplinas.value) { disciplina ->
+                    items(disciplinas.value) { disciplinaComProgresso ->
                         DisciplinaCard(
-                            disciplina = disciplina,
+                            disciplina = disciplinaComProgresso.disciplina,
+                            progresso = disciplinaComProgresso.progresso,
+                            progressoPercentual = disciplinaComProgresso.progressoPercentual,
                             onClick = {
-                                navController.navigate("tarefa_disciplina/${disciplina.id}")
+                                navController.navigate("tarefa_disciplina/${disciplinaComProgresso.disciplina.id}")
                             },
                             onDelete = {
-                                disciplinaParaExcluirNome = disciplina
+                                disciplinaParaExcluirNome = disciplinaComProgresso.disciplina
                             }
                         )
                     }
@@ -157,6 +160,8 @@ fun BotaoAdicionarDisciplina(onClick: () -> Unit) {
 @Composable
 fun DisciplinaCard(
     disciplina: Disciplina,
+    progresso: Float,
+    progressoPercentual: Int,
     onClick: () -> Unit,
     onDelete: () -> Unit
 ) {
@@ -192,11 +197,31 @@ fun DisciplinaCard(
                     .padding(horizontal = 16.dp, vertical = 12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = disciplina.nome,
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.weight(1f)
-                )
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = disciplina.nome,
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    LinearProgressIndicator(
+                        progress = progresso,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(6.dp)
+                            .clip(RoundedCornerShape(3.dp)),
+                        color = BlueMedium
+                    )
+
+                    Spacer(modifier = Modifier.height(2.dp))
+
+                    Text(
+                        text = "$progressoPercentual% completo",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.Gray
+                    )
+                }
 
                 IconButton(onClick = onDelete) {
                     Icon(
